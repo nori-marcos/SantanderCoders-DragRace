@@ -67,11 +67,11 @@ function startStopwatch() {
 
 //The following code creates the clear button that is responsible to clear the stopwatch and the name input if needed.
 const clearButton = document.querySelectorAll("button")[1];
-clearButton.addEventListener("click", clearStopwatchAndInput);
+clearButton.addEventListener("click", clearStopwatchAndInputAndSession);
 
 const dragNameInput = document.querySelector("input");
 
-function clearStopwatchAndInput() {
+function clearStopwatchAndInputAndSession() {
   stopWatchValue.innerHTML = "00:00:00";
   dragNameInput.value = "";
 }
@@ -80,23 +80,28 @@ function clearStopwatchAndInput() {
 const addButton = document.querySelectorAll("button")[2];
 addButton.addEventListener("click", getNameAndTime);
 
-function storageNameAndTime() {
-  const name = dragNameInput.value;
-  const time = stopWatchValue.innerText;
-  sessionStorage.setItem(name, time);
-}
+function storageNameAndTime() {}
 
 function getNameAndTime() {
   const ul = document.querySelector("ul");
   const li = document.createElement("li");
-  li.classList.add("list-group-item");
+  const span = document.createElement("span");
+
+  li.classList.add(
+    "list-group-item",
+    "d-flex",
+    "justify-content-between",
+    "align-items-center"
+  );
 
   const name = dragNameInput.value;
+  const time = stopWatchValue.innerText;
 
-  li.append(name);
+  span.innerText = time;
+  sessionStorage.setItem(name, time);
+
+  li.append(name, span);
   ul.append(li);
 
   dragNameInput.value = "";
-
-  storageNameAndTime();
 }
