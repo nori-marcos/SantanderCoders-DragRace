@@ -76,6 +76,15 @@ function clearStopwatchAndInputAndSession() {
   dragNameInput.value = "";
 }
 
+//The following code creates the restart button that is responsible to restart the drag race and clear the session storage.
+const restartButton = document.querySelectorAll("button")[3];
+restartButton.addEventListener("click", restartDragRace);
+
+function restartDragRace() {
+  sessionStorage.clear();
+  document.querySelector("ul").innerHTML = "";
+}
+
 //The following code creates the button add that storages the information with name and time, and adds it to the Ranking List
 const addButton = document.querySelectorAll("button")[2];
 addButton.addEventListener("click", getNameAndTime);
@@ -83,25 +92,46 @@ addButton.addEventListener("click", getNameAndTime);
 function storageNameAndTime() {}
 
 function getNameAndTime() {
-  const ul = document.querySelector("ul");
-  const li = document.createElement("li");
-  const span = document.createElement("span");
+  document.querySelector("ul").innerHTML = "";
 
-  li.classList.add(
-    "list-group-item",
-    "d-flex",
-    "justify-content-between",
-    "align-items-center"
-  );
+  const ul = document.querySelector("ul");
 
   const name = dragNameInput.value;
   const time = stopWatchValue.innerText;
 
-  span.innerText = time;
   sessionStorage.setItem(name, time);
 
-  li.append(name, span);
-  ul.append(li);
+  const sortedDrags = [];
+
+  for (var drag in sessionStorage) {
+    sortedDrags.push([drag, sessionStorage[drag]]);
+  }
+
+  sortedDrags.sort().splice(-6);
+
+  console.log(sessionStorage);
+
+  for (drag of sortedDrags) {
+    const li = document.createElement("li");
+    const span = document.createElement("span");
+
+    li.classList.add(
+      "list-group-item",
+      "d-flex",
+      "justify-content-between",
+      "align-items-center"
+    );
+
+    let dragName = drag[0];
+    let dragTime = drag[1];
+
+    span.innerText = dragTime;
+
+    li.append(dragName, span);
+    ul.append(li);
+  }
 
   dragNameInput.value = "";
+  stopWatchValue.innerHTML = "00:00:00";
+  console.log(milliseconds);
 }
