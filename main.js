@@ -74,6 +74,9 @@ const dragNameInput = document.querySelector("input");
 function clearStopwatchAndInputAndSession() {
   stopWatchValue.innerHTML = "00:00:00";
   dragNameInput.value = "";
+  milliseconds = 0;
+  seconds = 0;
+  minutes = 0;
 }
 
 //The following code creates the restart button that is responsible to restart the drag race and clear the session storage.
@@ -89,8 +92,6 @@ function restartDragRace() {
 const addButton = document.querySelectorAll("button")[2];
 addButton.addEventListener("click", getNameAndTime);
 
-function storageNameAndTime() {}
-
 function getNameAndTime() {
   document.querySelector("ul").innerHTML = "";
 
@@ -103,11 +104,16 @@ function getNameAndTime() {
 
   const sortedDrags = [];
 
-  for (var drag in sessionStorage) {
-    sortedDrags.push([drag, sessionStorage[drag]]);
+  for (let key in sessionStorage) {
+    if (!sessionStorage.hasOwnProperty(key)) {
+      continue;
+    }
+    sortedDrags.push([key, sessionStorage[key]]);
   }
 
-  sortedDrags.sort().splice(-6);
+  sortedDrags.sort(
+    (a, b) => parseInt(a[1].replace(",", "")) - parseInt(b[1].replace(",", ""))
+  );
 
   console.log(sessionStorage);
 
@@ -131,7 +137,6 @@ function getNameAndTime() {
     ul.append(li);
   }
 
-  dragNameInput.value = "";
-  stopWatchValue.innerHTML = "00:00:00";
+  clearStopwatchAndInputAndSession();
   console.log(milliseconds);
 }
