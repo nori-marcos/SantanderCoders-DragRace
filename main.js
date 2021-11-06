@@ -112,7 +112,7 @@ function getNameAndTime() {
   }
 
   sortedDrags.sort(
-    (a, b) => parseInt(a[1].replace(",", "")) - parseInt(b[1].replace(",", ""))
+    (a, b) => parseInt(a[1].replace(":", "")) - parseInt(b[1].replace(":", ""))
   );
 
   console.log(sessionStorage);
